@@ -24,4 +24,18 @@ class NotificationServices {
       print("Request denied");
     }
   }
+
+  //getting device token
+  Future<String> getDeviceToken() async {
+    String? token = await messaging.getToken();
+    return token!;
+  }
+
+//checking the expiry of token
+  void refreshToken() async {
+    messaging.onTokenRefresh.listen((event) {
+      event.toString();
+    
+    });
+  }
 }
