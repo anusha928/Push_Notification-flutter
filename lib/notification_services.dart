@@ -1,14 +1,69 @@
+import 'dart:math';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationServices {
   //initializing firebase messaging
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
+  //adding local notification pkugin
+
+  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+//initializing local notification
+  void localNotificationInit(
+      BuildContext context, RemoteMessage message) async {
+    //android initialization
+    var androidInitializationSettings =
+        const AndroidInitializationSettings('@mipmap/ic_launcher');
+    //ios initialization
+    // DarwinInitializationSettings();
+
+    var initializationSetting =
+        InitializationSettings(android: androidInitializationSettings);
+    //caling plugin
+    await _flutterLocalNotificationsPlugin.initialize(
+      initializationSetting,
+      onDidReceiveNotificationResponse: (payload) {},
+    );
+  }
+
+  Future<void> showNotification(RemoteMessage message) async {
+    AndroidNotificationChannel channel = AndroidNotificationChannel(
+        Random.secure().nextInt(100).toString(), "High Importance Notification",
+        importance: Importance.max);
+
+    AndroidNotificationDetails androidNotificationDetails =
+        AndroidNotificationDetails(
+            channel.id.toString(), channel.name.toString(),
+            channelDescription: "Description",
+            importance: Importance.high,
+            priority: Priority.high,
+            ticker: 'ticker');
+
+    Future.delayed(Duration.zero, () {
+      _flutterLocalNotificationsPlugin.show(
+        0,
+        message.notification!.title,
+        message.notification!.body,
+        NotificationDetails(android: androidNotificationDetails));
+    });
+
+    
+  }
+
   void notificationInit() {
     FirebaseMessaging.onMessage.listen((notification) {
-      print(notification.notification!.title);
-      print(notification.notification!.body);
+      if (kDebugMode) {
+        print(notification.notification!.title);
+        print(notification.notification!.body);
+      }
+      showNotification(notification);
     });
   }
 
