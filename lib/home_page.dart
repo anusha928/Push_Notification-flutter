@@ -15,6 +15,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     services.requestNotificationPermission();
+    services.notificationInit();
     services.getDeviceToken().then((value) {
       print(value);
     });

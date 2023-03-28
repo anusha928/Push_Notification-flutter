@@ -5,6 +5,13 @@ class NotificationServices {
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
+  void notificationInit() {
+    FirebaseMessaging.onMessage.listen((notification) {
+      print(notification.notification!.title);
+      print(notification.notification!.body);
+    });
+  }
+
   void requestNotificationPermission() async {
     NotificationSettings settings = await messaging.requestPermission(
         alert: true,
@@ -35,7 +42,6 @@ class NotificationServices {
   void refreshToken() async {
     messaging.onTokenRefresh.listen((event) {
       event.toString();
-    
     });
   }
 }
