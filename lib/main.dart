@@ -1,13 +1,22 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import 'home_page.dart';
 
-void main() async{
+void main() async {
   //initializing firebase
   WidgetsFlutterBinding.ensureInitialized();
- await Firebase.initializeApp();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(
+      (message) => firebaseMessagingBackgroundHandler());
   runApp(const MyApp());
+}
+//handling background notification
+
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler() async {
+  await Firebase.initializeApp();
 }
 
 class MyApp extends StatelessWidget {
