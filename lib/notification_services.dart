@@ -10,7 +10,7 @@ class NotificationServices {
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-  //adding local notification pkugin
+  //adding local notification plugin
 
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -26,7 +26,7 @@ class NotificationServices {
 
     var initializationSetting =
         InitializationSettings(android: androidInitializationSettings);
-    //caling plugin
+    //calling plugin
     await _flutterLocalNotificationsPlugin.initialize(
       initializationSetting,
       onDidReceiveNotificationResponse: (payload) {},

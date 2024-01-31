@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_notification/notification_services.dart';
-
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,21 +8,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  NotificationServices services = NotificationServices();
-
-  @override
-  void initState() {
-    services.requestNotificationPermission();
-    services.notificationInit();
-    services.getDeviceToken().then((value) {
-      print(value);
-    });
-    services.refreshToken();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return const Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Notification")
+          ],
+        ),
+      ),
+    );
   }
 }
