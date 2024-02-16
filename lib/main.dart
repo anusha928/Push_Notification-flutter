@@ -1,29 +1,19 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_notification/notification_services.dart';
-import '/firebase_options.dart';
-import 'home_page.dart';
+import 'package:flutter_firebase_notification/home_page.dart';
 
-void main() async {
-  //initializing firebase
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options:DefaultFirebaseOptions.currentPlatform,);
-   NotificationServices notificationServices = NotificationServices();
-   notificationServices.requestNotificationPermission();
-  Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-    await Firebase.initializeApp();
-    print("Handling a background message: ${message.messageId}");
-  }
-  // Listening to the background messages
-  WidgetsFlutterBinding.ensureInitialized();
-  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-  notificationServices.notificationInit();
-  notificationServices.getDeviceToken().then((value) {
-    print(value);
-  });
-  notificationServices.refreshToken();
 
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message)async {
+  await Firebase.initializeApp();
+}
+
+
+void main()async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
 }
 
@@ -31,14 +21,15 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+
         primarySwatch: Colors.blue,
       ),
-      debugShowCheckedModeBanner: false,
       home: const HomePage(),
     );
   }

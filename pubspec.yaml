@@ -30,6 +30,7 @@ environment:
 dependencies:
   app_settings: ^4.2.0
   cupertino_icons: ^1.0.2
+  firebase_analytics: ^10.8.1
   firebase_core: ^2.8.0
   firebase_messaging: ^14.3.0
   flutter:
